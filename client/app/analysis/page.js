@@ -9,7 +9,7 @@ export default function AnalysisPage() {
     const fetchAnalysis = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/analysis"
+          `${process.env.NEXT_PUBLIC_API_URL}/api/analysis`
         );
 
         const data = await response.json();

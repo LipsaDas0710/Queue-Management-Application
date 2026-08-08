@@ -16,7 +16,7 @@ export default function QueueDetailsPage() {
   const fetchPeople = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/people/${params.id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/people/${params.id}`
       );
 
       const data = await response.json();
@@ -40,7 +40,7 @@ useEffect(() => {
   const fetchQueue = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/queues/${params.id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/queues/${params.id}`
       );
 
       const data = await response.json();
@@ -69,7 +69,7 @@ useEffect(() => {
   if (!name.trim()) return;
 
   try {
-    const response = await fetch("http://localhost:5000/api/people", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/people`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -101,7 +101,7 @@ useEffect(() => {
   const handleCancel = async (personId) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/people/${personId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/people/${personId}`,
       {
         method: "DELETE",
       }
@@ -125,7 +125,7 @@ useEffect(() => {
 const handleServeNext = async () => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/people/serve/${params.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/people/serve/${params.id}`,
       {
         method: "PATCH",
       }
@@ -151,7 +151,7 @@ const handleServeNext = async () => {
 const handleMove = async (personId, direction) => {
   try {
     const response = await fetch(
-      "http://localhost:5000/api/people/move",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/people/move`,
       {
         method: "PATCH",
         headers: {
@@ -172,7 +172,7 @@ const handleMove = async (personId, direction) => {
 
     // Fetch updated queue
     const updatedResponse = await fetch(
-      `http://localhost:5000/api/people/${params.id}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/people/${params.id}`
     );
 
     const updatedPeople = await updatedResponse.json();
@@ -184,6 +184,12 @@ const handleMove = async (personId, direction) => {
   }
 };
 
+ const handleLogout = () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      window.location.href = "/login";
+    };
 
   return (
     <main className="min-h-screen bg-gray-100">
@@ -194,7 +200,7 @@ const handleMove = async (personId, direction) => {
             Queue Management
           </h1>
 
-          <button className="text-sm text-gray-600 hover:text-gray-900">
+          <button onClick={handleLogout} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
             Logout
           </button>
         </div>

@@ -9,7 +9,7 @@ export default function QueueManagementPage() {
   useEffect(() => {
   const fetchQueues = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/queues");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/queues`);
 
       const data = await response.json();
 
@@ -33,7 +33,7 @@ export default function QueueManagementPage() {
     if (!queueName.trim()) return;
   
     try {
-      const response = await fetch("http://localhost:5000/api/queues", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/queues`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
