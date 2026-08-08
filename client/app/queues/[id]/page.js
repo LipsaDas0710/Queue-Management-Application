@@ -7,43 +7,43 @@ export default function QueueDetailsPage() {
   const params = useParams();
   const router = useRouter();
 
-  const [people, setPeople] = useState([
-    {
-      id: 1,
-      token: "A001",
-      name: "Rahul",
-    },
-    {
-      id: 2,
-      token: "A002",
-      name: "Priya",
-    },
-    {
-      id: 3,
-      token: "A003",
-      name: "Ankit",
-    },
-  ]);
+  const [people, setPeople] = useState([]);
 
   const [name, setName] = useState("");
 
   const queueName = "General Queries";
 
-  const handleAddPerson = (e) => {
+  const handleAddPerson = async (e) => {
     e.preventDefault();
-
+  
     if (!name.trim()) return;
-
-    const newPerson = {
-      id: Date.now(),
-      token: `A${String(people.length + 1).padStart(3, "0")}`,
-      name: name.trim(),
-    };
-
-    setPeople([...people, newPerson]);
-    setName("");
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/people", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          queueId: params.id,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+  
+      setPeople([...people, data.person]);
+      setName("");
+  
+      console.log(data);
+    } catch (error) {
+      console.error("Failed to add person:", error);
+    }
   };
-
   return (
     <main className="min-h-screen bg-gray-100">
       {/* Navbar */}
@@ -92,7 +92,7 @@ export default function QueueDetailsPage() {
               type="text"
               placeholder="Enter person's name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)} //what is this why are we doing this
               required
               className="flex-1 px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-blue-500 text-gray-900 placeholder:text-gray-400"
             />
@@ -113,9 +113,9 @@ export default function QueueDetailsPage() {
               <h3 className="text-lg font-semibold text-gray-900">
                 Waiting Queue
               </h3>
-
+               {/* so people is an array?? what is this line doing? peopelarray is in use state people?? */}
               <p className="text-sm text-gray-500 mt-1">
-                {people.length}{" "}
+                {people.length}{" "} 
                 {people.length === 1 ? "person" : "people"} waiting
               </p>
             </div>
@@ -130,7 +130,7 @@ export default function QueueDetailsPage() {
             <div>
               {people.map((person, index) => (
                 <div
-                  key={person.id}
+                  key={person._id}
                   className="px-6 py-4 border-b border-gray-100 last:border-b-0 flex items-center justify-between"
                 >
                   <div className="flex items-center gap-5">

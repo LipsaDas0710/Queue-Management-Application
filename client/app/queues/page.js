@@ -1,42 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function QueueManagementPage() {
   const router = useRouter();
-  const [queues, setQueues] = useState([
-  
-    {
-      id: 1,
-      name: "General Queries",
-      people: 5,
-    },
-    {
-      id: 2,
-      name: "Technical Support",
-      people: 3,
-    },
-  ]);
+  const [queues, setQueues] = useState([]);
+  useEffect(() => {
+  const fetchQueues = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/queues");
+
+      const data = await response.json();
+
+      setQueues(data);
+    } catch (error) {
+      console.error("Failed to fetch queues:", error);
+    }
+  };
+
+  fetchQueues();
+}, []);
 
   const [showCreateQueue, setShowCreateQueue] = useState(false);
   const [queueName, setQueueName] = useState("");
+
   
 
-  const handleCreateQueue = (e) => {
+  const handleCreateQueue = async (e) => {
     e.preventDefault();
-
+  
     if (!queueName.trim()) return;
-
-    const newQueue = {
-      id: queues.length + 1,
-      name: queueName,
-      people: 0,
-    };
-
-    setQueues([...queues, newQueue]);
-    setQueueName("");
-    setShowCreateQueue(false);
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/queues", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: queueName,
+          description: "Customer queries",
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        alert(data.message || "Failed to create queue");
+        return;
+      }
+  
+      console.log("Queue created:", data);
+  
+      // Add the queue returned by MongoDB to the screen
+      setQueues((prevQueues) => [...prevQueues, data.queue]);
+  
+      // Clear form
+      setQueueName("");
+  
+      // Close modal
+      setShowCreateQueue(false);
+  
+    } catch (error) {
+      console.error("Failed to create queue:", error);
+    }
   };
 
   return (
@@ -83,7 +111,7 @@ export default function QueueManagementPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {queues.map((queue) => (
               <div
-                key={queue.id}
+                key={queue._id}
                 className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-sm transition"
               >
                 <h3 className="text-lg font-semibold text-gray-900">
@@ -91,12 +119,11 @@ export default function QueueManagementPage() {
                 </h3>
 
                 <p className="text-gray-500 text-sm mt-2">
-                  {queue.people}{" "}
-                  {queue.people === 1 ? "person" : "people"} waiting
+                  {queue.tokenNumber || 0} people waiting
                 </p>
 
                 <button 
-                onClick={() => router.push(`/queues/${queue.id}`)}
+                onClick={() => router.push(`/queues/${queue._id}`)}
                 className="w-full mt-6 border border-blue-600 text-blue-600 py-2.5 rounded-lg font-medium hover:bg-blue-50 transition">
                   Open Queue
                 </button>

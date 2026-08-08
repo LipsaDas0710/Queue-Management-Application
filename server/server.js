@@ -1,5 +1,8 @@
 const express = require("express");
 const cors = require("cors");
+const queueRoutes = require("./routes/queueRoutes");
+const personRoutes = require("./routes/personRoutes");
+
 
 require("dotenv").config();
 
@@ -14,6 +17,10 @@ connectDB();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/api/people", personRoutes);
+
+// Routes
+app.use("/api/queues", queueRoutes);
 
 // Test route
 app.get("/", (req, res) => {
