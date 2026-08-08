@@ -67,6 +67,13 @@ export default function QueueManagementPage() {
     }
   };
 
+      const handleLogout = () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    
+      window.location.href = "/login";
+    };
+
   return (
     <main className="min-h-screen bg-gray-100">
       <nav className="bg-white border-b border-gray-200">
@@ -81,7 +88,7 @@ export default function QueueManagementPage() {
             Analysis
           </button>
           
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
+          <button onClick={handleLogout} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">
             Logout
           </button>
           </div>

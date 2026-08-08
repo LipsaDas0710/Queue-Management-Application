@@ -3,6 +3,7 @@ const cors = require("cors");
 const queueRoutes = require("./routes/queueRoutes");
 const personRoutes = require("./routes/personRoutes");
 const analysisRoutes = require("./routes/analysisRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 
 require("dotenv").config();
@@ -18,8 +19,11 @@ connectDB();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/auth", authRoutes);
 app.use("/api/people", personRoutes);
 app.use("/api/analysis", analysisRoutes);
+
 
 // Routes
 app.use("/api/queues", queueRoutes);
