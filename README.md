@@ -42,7 +42,7 @@ https://queue-management-application-fqkb.onrender.com
 
 ### Queue Management Dashboard
 
-![Queue Management Dashboard](Screenshot/Screenshot%202026-08-08%20212201.png)
+![Queue Management Dashboard](Screenshort/Screenshot%202026-08-08%20211739.png)
 
 ---
 
