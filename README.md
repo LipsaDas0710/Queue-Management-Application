@@ -34,12 +34,6 @@ https://queue-management-application-fqkb.onrender.com
 
 ## 🖥️ Screenshots
 
-### Add People
-
-![Add People](Screenshort/Screenshot%202026-08-08%20212201.png)
-
----
-
 ### Queue Management Interface
 
 ![Queue Management Interface](Screenshort/Screenshot%202026-08-08%20211739.png)
@@ -49,6 +43,11 @@ https://queue-management-application-fqkb.onrender.com
 ### Queue Management Dashboard
 
 ![Queue Management Dashboard](Screenshort/Screenshot%202026-08-08%20212250.png)
+
+---
+### Add People
+
+![Add People](Screenshort/Screenshot%202026-08-08%20212201.png)
 
 ---
 
