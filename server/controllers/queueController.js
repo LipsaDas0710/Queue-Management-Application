@@ -42,7 +42,30 @@ const getQueues = async (req, res) => {
   }
 };
 
+// Get a single queue by ID
+const getQueueById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const queue = await Queue.findById(id);
+
+    if (!queue) {
+      return res.status(404).json({
+        message: "Queue not found",
+      });
+    }
+
+    res.status(200).json(queue);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch queue",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createQueue,
   getQueues,
+  getQueueById,
 };

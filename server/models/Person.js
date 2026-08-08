@@ -23,6 +23,10 @@ const personSchema = new mongoose.Schema(
       enum: ["waiting", "served", "cancelled"],
       default: "waiting",
     },
+     position: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,
