@@ -70,7 +70,7 @@ export default function QueueManagementPage() {
       const handleLogout = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-    
+
       window.location.href = "/login";
     };
 
@@ -133,7 +133,7 @@ export default function QueueManagementPage() {
                 </h3>
 
                 <p className="text-gray-500 text-sm mt-2">
-                  {queue.tokenNumber || 0} people waiting
+                  {queue.waitingCount || 0} people waiting
                 </p>
 
                 <button 
