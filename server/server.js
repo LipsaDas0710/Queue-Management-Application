@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const queueRoutes = require("./routes/queueRoutes");
 const personRoutes = require("./routes/personRoutes");
+const analysisRoutes = require("./routes/analysisRoutes");
 
 
 require("dotenv").config();
@@ -18,6 +19,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 app.use("/api/people", personRoutes);
+app.use("/api/analysis", analysisRoutes);
 
 // Routes
 app.use("/api/queues", queueRoutes);
